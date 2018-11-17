@@ -26,18 +26,18 @@ if __name__ == '__main__':
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     train_filename = dir_path + "/dataset_training.csv"
-    test_filename = dir_path + "/iris_test.csv"
+    test_filename = dir_path + "/dataset_test.csv"
 
-    bits_num = 8
+    bits_num = 16
     #column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
     column_names = []
-    for i in range(0, bits_num + 1):
+    for i in range(0, bits_num):
         column_names.append('bit_{}'.format(i))
 
     # identifier column
     column_names.append('prime')
 
-    class_names = ['Not Prime', 'Prime']
+    class_names = ['notPrime', 'isPrime']
 
     feature_names = column_names[:-1]
     label_name = column_names[-1]
