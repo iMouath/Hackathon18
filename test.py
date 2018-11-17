@@ -1,18 +1,22 @@
 from random import randint
+import csv
 
 intArray = []
 binArray = []
+data = []
+data_binary = []
 
 #converts a decimal number to a binary number
 def decimalToBinary(dec, numberOfBits):
-    answer = []
-    while(dec > 0):
-        answer.append(dec % 2)
+    answer = ""
+    while (dec > 0):
+        answer = str(dec % 2) + answer
         dec = dec // 2
-    zeros = []
-    for i in range(0, numberOfBits-len(answer)):
-        zeros.append(0)
-    return zeros + answer
+    zeros = ""
+    for i in range(0, numberOfBits - len(answer)):
+        zeros = zeros + '0'
+    binaryString = zeros + answer
+    return binaryString
 
 #converts a binary number to a decimal number
 def binaryToDecimal(bin):
@@ -25,7 +29,7 @@ def binaryToDecimal(bin):
 
 #check if an integer is prime
 def isPrime(n):
-  if n == 1 or n == 2 or n == 3:
+  if n == 2 or n == 3:
       return True
   if n < 2 or n%2 == 0:
       return False
@@ -41,21 +45,38 @@ def isPrime(n):
     f +=6
   return True
 
-#fills an array with number from 1 to 10
-def createArray(n):
-    for i in range(1,n):
-        intArray.append(i)
+#creates a useable data set with specified number
+def createUseableDate(int, numOfBits):
+    primeNumber = 0
+    if(isPrime(int) == True):
+        primeNumber = 1
+    string = decimalToBinary(int, numOfBits + 1)
+    useableData = []
+    for i in range(1, len(string)):
+        if(string[i] == '1'):
+            useableData.append(0.9)
+        else:
+            useableData.append(0.1)
+    #return useableData
+    if(primeNumber == 1):
+        useableData.append(1)
+    else:
+        useableData.append(0)
+    return useableData
+
+def write(usableData):
+    with open('prime_test.csv', 'w+') as csvfile:
+        csvfile.write(usableData)
+        csvfile.write('\n')
 
 
 if __name__ == '__main__':
-    # turns an array of decimals numbers into its equivalent binary representation
-    createArray(10)
-    for i in range(1, len(intArray)):
-        x = decimalToBinary(intArray[i], 8)
-        binArray.append(x)
 
-    for i in range(1, 10):
-        if isPrime(i) == True:
-            print(i, " is prime")
-        else:
-            print(i, " is NOT prime")
+    numArray = []
+    for x in range(1, 100):
+        numArray.append(randint(1, 100))
+    print(numArray)
+    for i in range(0, len(numArray)):
+        num = numArray[i]
+        useableData = createUseableDate(num, 16)
+        print(useableData)
