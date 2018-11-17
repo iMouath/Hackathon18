@@ -6,35 +6,14 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.contrib.eager as tfe
 
-
-# def decimalToBinary(dec, numberOfBits):
-#     answer = []
-#     while(dec > 0):
-#         answer.append(dec % 2)
-#         dec = dec // 2
-#     zeros = []
-#     for i in range(0, numberOfBits-len(answer)):
-#         zeros.append(0)
-#     return zeros + answer
-#
-# def binaryToDecimal(bin):
-#     place = 1
-#     sum = 0
-#     for i in range(len(bin)-1, -1, -1):
-#         sum += (place * bin[i])
-#         place *= 2
-#     return sum
-
 def pack_features_vector(features, labels):
     """Pack the features into a single array."""
-    features = tf.stack(list(features.values()), axis=1)
+    features = tf.stack(list(features.values()), axis = 1)
     return features, labels
-
 
 def loss(model, x, y):
     y_ = model(x)
-    return tf.losses.sparse_softmax_cross_entropy(labels=y, logits=y_)
-
+    return tf.losses.sparse_softmax_cross_entropy(labels = y, logits = y_)
 
 def grad(model, inputs, targets):
     with tf.GradientTape() as tape:
@@ -49,8 +28,8 @@ if __name__ == '__main__':
     train_filename = dir_path + "/dataset_training.csv"
     test_filename = dir_path + "/iris_test.csv"
 
-    bits_num = 4
-    # column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+    bits_num = 8
+    #column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
     column_names = []
     for i in range(0, bits_num + 1):
         column_names.append('bit_{}'.format(i))
@@ -58,7 +37,7 @@ if __name__ == '__main__':
     # identifier column
     column_names.append('prime')
 
-    class_names = ['Prime', 'Not Prime']
+    class_names = ['Not Prime', 'Prime']
 
     feature_names = column_names[:-1]
     label_name = column_names[-1]
@@ -67,16 +46,16 @@ if __name__ == '__main__':
     train_dataset = tf.contrib.data.make_csv_dataset(
         train_filename,
         batch_size,
-        column_names=column_names,
-        label_name=label_name,
-        num_epochs=1)
+        column_names = column_names,
+        label_name = label_name,
+        num_epochs = 1)
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
         batch_size,
-        column_names=column_names,
-        label_name=label_name,
-        num_epochs=1)
+        column_names = column_names,
+        label_name = label_name,
+        num_epochs = 1)
 
     train_dataset = train_dataset.map(pack_features_vector)
     test_dataset = test_dataset.map(pack_features_vector)
@@ -114,7 +93,7 @@ if __name__ == '__main__':
             # Track progress
             epoch_loss_avg(loss_value)  # add current batch loss
             # compare predicted label to actual label
-            epoch_accuracy(tf.argmax(model(x), axis=1, output_type=tf.int32), y)
+            epoch_accuracy(tf.argmax(model(x), axis = 1, output_type = tf.int32), y)
 
         # end epoch
         train_loss_results.append(epoch_loss_avg.result())
@@ -130,7 +109,7 @@ if __name__ == '__main__':
 
     for (x, y) in test_dataset:
         logits = model(x)
-        prediction = tf.argmax(logits, axis=1, output_type=tf.int32)
+        prediction = tf.argmax(logits, axis = 1, output_type = tf.int32)
         test_accuracy(prediction, y)
 
     print("Test set accuracy: {:.3%}".format(test_accuracy.result()))
