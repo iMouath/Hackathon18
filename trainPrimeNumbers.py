@@ -41,21 +41,21 @@ if __name__ == '__main__':
 
     feature_names = column_names[:-1]
     label_name = column_names[-1]
-    batch_size = 32
+    batch_size = 64
 
     train_dataset = tf.contrib.data.make_csv_dataset(
         train_filename,
         batch_size,
         column_names = column_names,
         label_name = label_name,
-        num_epochs = 2)
+        num_epochs = 1)
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
         batch_size,
         column_names = column_names,
         label_name = label_name,
-        num_epochs = 2)
+        num_epochs = 1)
 
     train_dataset = train_dataset.map(pack_features_vector)
     test_dataset = test_dataset.map(pack_features_vector)
