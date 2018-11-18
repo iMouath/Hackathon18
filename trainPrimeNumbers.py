@@ -104,7 +104,7 @@ if __name__ == '__main__':
         batch_size,
         column_names=column_names,
         label_name=label_name,
-        num_epochs=50)
+        num_epochs=1)
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     train_loss_results = []
     train_accuracy_results = []
 
-    num_epochs = 301
+    num_epochs = 3010
 
     for epoch in range(num_epochs):
         epoch_loss_avg = tfe.metrics.Mean()
