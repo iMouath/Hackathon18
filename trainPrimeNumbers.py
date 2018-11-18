@@ -6,19 +6,76 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.contrib.eager as tfe
 
+bits_num = 32
+
+
 def pack_features_vector(features, labels):
     """Pack the features into a single array."""
-    features = tf.stack(list(features.values()), axis = 1)
+    features = tf.stack(list(features.values()), axis=1)
     return features, labels
+
 
 def loss(model, x, y):
     y_ = model(x)
-    return tf.losses.sparse_softmax_cross_entropy(labels = y, logits = y_)
+    return tf.losses.sparse_softmax_cross_entropy(labels=y, logits=y_)
+
 
 def grad(model, inputs, targets):
     with tf.GradientTape() as tape:
         loss_value = loss(model, inputs, targets)
     return loss_value, tape.gradient(loss_value, model.trainable_variables)
+
+
+# converts a decimal number to a binary number
+def decimalToBinary(dec, numberOfBits):
+    answer = ""
+    while (dec > 0):
+        answer = str(dec % 2) + answer
+        dec = dec // 2
+    zeros = ""
+    for i in range(0, numberOfBits - len(answer)):
+        zeros = zeros + '0'
+    binaryString = zeros + answer
+    return binaryString
+
+
+# check if an integer is prime
+def isPrime(n):
+    if n == 2 or n == 3:
+        return True
+    if n < 2 or n % 2 == 0:
+        return False
+    if n < 9:
+        return True
+    if n % 3 == 0:
+        return False
+    r = int(n ** 0.5)
+    f = 5
+    while f <= r:
+        if n % f == 0: return False
+        if n % (f + 2) == 0: return False
+        f += 6
+    return True
+
+
+# creates a useable data set with specified number
+def createUseableDate(int):
+    primeNumber = 0
+    if (isPrime(int) == True):
+        primeNumber = 1
+    string = decimalToBinary(int, bits_num + 1)
+    useableData = []
+    for i in range(1, len(string)):
+        if (string[i] == '1'):
+            useableData.append(0.9)
+        else:
+            useableData.append(0.1)
+    # return useableData
+    if (primeNumber == 1):
+        useableData.append(1)
+    else:
+        useableData.append(0)
+    return useableData
 
 
 if __name__ == '__main__':
@@ -28,8 +85,7 @@ if __name__ == '__main__':
     train_filename = dir_path + "/dataset_training.csv"
     test_filename = dir_path + "/dataset_test.csv"
 
-    bits_num = 32
-    #column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
+    # column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
     column_names = []
     for i in range(0, bits_num):
         column_names.append('bit_{}'.format(i))
@@ -46,16 +102,16 @@ if __name__ == '__main__':
     train_dataset = tf.contrib.data.make_csv_dataset(
         train_filename,
         batch_size,
-        column_names = column_names,
-        label_name = label_name,
-        num_epochs = 1)
+        column_names=column_names,
+        label_name=label_name,
+        num_epochs=1)
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
         batch_size,
-        column_names = column_names,
-        label_name = label_name,
-        num_epochs = 1)
+        column_names=column_names,
+        label_name=label_name,
+        num_epochs=1)
 
     train_dataset = train_dataset.map(pack_features_vector)
     test_dataset = test_dataset.map(pack_features_vector)
@@ -93,7 +149,7 @@ if __name__ == '__main__':
             # Track progress
             epoch_loss_avg(loss_value)  # add current batch loss
             # compare predicted label to actual label
-            epoch_accuracy(tf.argmax(model(x), axis = 1, output_type = tf.int32), y)
+            epoch_accuracy(tf.argmax(model(x), axis=1, output_type=tf.int32), y)
 
         # end epoch
         train_loss_results.append(epoch_loss_avg.result())
@@ -109,22 +165,23 @@ if __name__ == '__main__':
 
     for (x, y) in test_dataset:
         logits = model(x)
-        prediction = tf.argmax(logits, axis = 1, output_type = tf.int32)
+        prediction = tf.argmax(logits, axis=1, output_type=tf.int32)
         test_accuracy(prediction, y)
 
     print("Test set accuracy: {:.3%}".format(test_accuracy.result()))
 
     # create single test input loop
     inputToTest = input("Please enter data to test:")
-    input = inputToTest.split(',')
-    input = list(map(float, iter(input)))
+
     print(input)
-    predict_dataset2 = tf.convert_to_tensor([input])
-    predict_dataset = tf.convert_to_tensor([
-        [5.1, 3.3, 1.7, 0.5, ],
-        [5.9, 3.0, 4.2, 1.5, ],
-        [6.9, 3.1, 5.4, 2.1]
-    ])
+    inputToTensor = createUseableDate(int(inputToTest))
+    print(inputToTensor)
+    predict_dataset = tf.convert_to_tensor(inputToTensor)
+    # predict_dataset = tf.convert_to_tensor([
+    #     [5.1, 3.3, 1.7, 0.5, ],
+    #     [5.9, 3.0, 4.2, 1.5, ],
+    #     [6.9, 3.1, 5.4, 2.1]
+    # ])
 
     predictions = model(predict_dataset)
 
