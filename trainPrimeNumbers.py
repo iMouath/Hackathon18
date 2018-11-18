@@ -28,7 +28,7 @@ if __name__ == '__main__':
     train_filename = dir_path + "/dataset_training.csv"
     test_filename = dir_path + "/dataset_test.csv"
 
-    bits_num = 16
+    bits_num = 32
     #column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
     column_names = []
     for i in range(0, bits_num):
@@ -41,14 +41,14 @@ if __name__ == '__main__':
 
     feature_names = column_names[:-1]
     label_name = column_names[-1]
-    batch_size = 64
+    batch_size = 32
 
     train_dataset = tf.contrib.data.make_csv_dataset(
         train_filename,
         batch_size,
         column_names = column_names,
         label_name = label_name,
-        num_epochs = 1)
+        num_epochs = 1)-
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
