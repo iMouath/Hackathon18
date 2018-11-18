@@ -121,7 +121,7 @@ if __name__ == '__main__':
         tf.keras.layers.Dense(10, activation=tf.nn.relu, input_shape=(bits_num,)),
         # input shape required, based on our dataset.
         tf.keras.layers.Dense(10, activation=tf.nn.relu),
-        tf.keras.layers.Dense(1)  # Expected output
+        tf.keras.layers.Dense(3)  # Expected output
     ])
 
     optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
@@ -176,7 +176,7 @@ if __name__ == '__main__':
     print(input)
     inputToTensor = createUseableDate(int(inputToTest))
     print(inputToTensor)
-    predict_dataset = tf.convert_to_tensor(inputToTensor)
+    predict_dataset = tf.convert_to_tensor([inputToTensor])
     # predict_dataset = tf.convert_to_tensor([
     #     [5.1, 3.3, 1.7, 0.5, ],
     #     [5.9, 3.0, 4.2, 1.5, ],
