@@ -133,7 +133,7 @@ if __name__ == '__main__':
     train_loss_results = []
     train_accuracy_results = []
 
-    num_epochs = 201
+    num_epochs = 301
 
     for epoch in range(num_epochs):
         epoch_loss_avg = tfe.metrics.Mean()
