@@ -173,7 +173,9 @@ if __name__ == '__main__':
     # create single test input loop
     inputToTest = input("Please enter data to test:")
 
-    print(input)
+    print(inputToTest)
+    input_split = inputToTest.split(',')
+    input_split = list(map(float, iter(input_split)))
     inputToTensor = createUseableDate(int(inputToTest))
     print(inputToTensor)
     predict_dataset = tf.convert_to_tensor([inputToTensor])
