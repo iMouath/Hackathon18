@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     train_filename = dir_path + "/dataset_training.csv"
-    test_filename = dir_path + "/dataset_test.csv"
+    test_filename = dir_path + "/testPrimeBinary.csv"
 
     # column_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'species']
     column_names = []
