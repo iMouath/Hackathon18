@@ -104,7 +104,7 @@ if __name__ == '__main__':
         batch_size,
         column_names=column_names,
         label_name=label_name,
-        num_epochs=1)
+        num_epochs=50)
 
     test_dataset = tf.contrib.data.make_csv_dataset(
         test_filename,
