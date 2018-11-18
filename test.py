@@ -83,12 +83,12 @@ if __name__ == '__main__':
 
     numArray = []
     useableData = []
-    for x in range(1, 1000):
-        numArray.append(randint(1, 1000))
+    for x in range(1, 5001):
+        numArray.append(randint(1, 100000))
     # print(numArray)
     for i in range(0, len(numArray)):
         num = numArray[i]
-        useableData = createUseableDate(num, 32)
+        useableData = createUseableDate(num, 24)
         string = str(useableData)
         string = string.replace("[", "", 1)
         string = string.replace("]", "", 1)

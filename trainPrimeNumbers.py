@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.contrib.eager as tfe
 
-bits_num = 32
+bits_num = 24
 
 
 def pack_features_vector(features, labels):
